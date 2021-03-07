@@ -1,0 +1,151 @@
+---
+title: Performance and design
+author: Dawid Jankowiak
+summary: The last week was full of performance considerations, but I found time to think about my career path too and a bit about colorful gradients.
+published: March 8th, 2021
+---
+
+## When performance is not important
+
+<Tweet id="1367853852628811777" />
+
+This funny tweet from David seems a good entry point to talk about performance.
+Somehow the topic popped up twice this week in the content I've consumed...
+
+### Why GTA Online is slow to load?
+
+First, at the beginning of the week, there was this article
+[How I cut GTA Online loading times by 70%](https://nee.lv/2021/02/28/How-I-cut-GTA-Online-loading-times-by-70/)
+by [t0st](https://github.com/tostercx).
+
+This incredible story goes deep into debugging and profiling GTA Online without original source code,
+to understand why the loading times are sooooo slow.
+
+The effort is admirable, and what's even better they were able to figure it out
+and patch it!
+
+The only sad part is that this needed to be done by the "user".
+
+### Ranting on slow programs
+
+During his Twitch stream, discussion in the chat started on how fast Apple new M1 processors are
+and [Jon](https://twitter.com/Jonathan_Blow) was asked about his views on this and how it may affect the game industry.
+
+This is the relevant part of the stream [Let's Improve! Compiler at 2h 14m 13s](https://www.twitch.tv/videos/820854910?t=02h14m13s).
+At first, he was dismissive, but then he did a short rant on how those processors will be used to run slower programs in the future
+because the programmers will waste this speed. Maybe on inefficient JSON parsing 🤔.
+
+I think that Jon has a point. That by changing how we write our programs they can be way faster.
+I don't think Jon is the only one how noticed it and started to do something about this. They are
+others. As a professional Front-End developer, I see that tools that put performance first are popping
+around us.
+
+### Tools that are actually faster
+
+From bundlers like [Esbuild](https://esbuild.github.io/) and compilers like [SWR](https://swc.rs/),
+to build tools like [Snowpack](https://www.snowpack.dev/) or [Vite](https://vitejs.dev/),
+and all-in-one like [Rome](https://rome.tools/) which runs eslint rules faster than eslint itself.
+
+<Tweet id="1359756053735497737" />
+
+But that's only for the programmer’s convenience, what about the end-users? Here the story gets more
+complicated because I'm not aware of many tools that would put the performance as a priority.
+There are two noticeable exceptions though [Superhuman](https://superhuman.com) and [Linear](https://linear.app)
+both adhere to the same 100 ms rule. As Superhuman explains it on its website:
+
+> The creator of Gmail, Paul Buchheit, had a rule: every interaction should be faster than 100ms. Why? Because 100ms is the threshold where interactions feel instantaneous.
+
+At first, I would say that this is a new wave of tools and in some time everything will be faster.  
+But let's be honest, that's not the case. Superhuman and Linear are niche tools targeting people
+who need this speed because they busy with something more important.
+
+### Do we really need to be fast?
+
+Along comes my friend [Radek](https://twitter.com/singlespl?s=20), during a short discussion about
+this he pointed out that firstly by upgrading to a faster processor the programs that you run will
+get faster.
+That was the case with the loading times of GTA Online.
+But also, in the future, this will give more opportunities to write slower programs.
+
+What we've agreed with Radek is that not everything needs to be blazing fast. There is this
+sweet spot of _"fast enough"_. Companies like [Shopify](https://www.shopify.com) and
+[Basecamp](https://basecamp.com) can be successful despite being written in Ruby.
+
+There's this mantra **Make it work, make it right, make it fast** that I've heard few times
+throughout my career in software. Maybe it's a [misconseption](https://henriquebastos.net/the-make-it-work-make-it-right-make-it-fast-misconception/)
+to understand it as an independend steps, or maybe it's the pressure from Product People to
+deliver something working **now**.  
+I know from my own experience that in big companies with many people/teams working on the same code base
+readability and maintainability are way more important than the cleverness of fast code.
+
+### Code for computers
+
+As [Martin Fowler](https://martinfowler.com) once famously said
+
+> Any fool can write code that a computer can understand. Good programmers write code that humans can understand.
+
+The thing is that it's the computer that will run the code,
+and for the computer to run it fast it may expect something a bit different than the human.
+
+Compilers try their best to be the bridge to solve this challenge and let us write something that will
+be readable to humans as well as fast to run for computers. Tools like [Prepack](https://prepack.io)
+try to take it a step further.
+
+But sometimes you need to give it a win and write something unreadable, so it’ll be fast,
+like for example [Fast Inverse Square Root in A Quake III](https://youtu.be/p8u_k2LIZyo).
+
+### Uninformed opinion design
+
+When I was thinking about writing this _Journal_ I realized that most of the time I'll be sharing
+my own opinions, that in most cases will be uninformed, or will lack deep thought or insights/research.
+
+Because I don't want to spend months investigating topics, analyzing facts, etc. I came up with
+a workaround. I'll put those _uninformed opinions_ in a box saying that they uninformed and opinions.
+
+Major halves of the two sections above should be in those boxes. The reason they don't is embarrassingly simple.
+
+I didn't design how those boxes should look...
+
+I'm a fan of modern flat designs with elements of gradients and blurs. Like in this design of cards.
+
+<Tweet id="1367598661203611651" />
+
+This issue is, I spent time setting up the Journal and writing this entry,
+I needed to say _"not today"_ to the box.
+
+### Future
+
+I'll add it in the future, alongside the RSS and Dark Theme, and ... oh, I have so many ideas
+that it's easy to feel overwhelmed. So, for now, I'll focus on incremental improvements and writing.
+
+### Inter path to IC career
+
+This week I've learned that there's a catchy name for not being a manager in a company: _individual contributor_.
+The IC abbreviation was used many times in this [interview](https://staff.design/rasmus-andersson)
+with [Rasmus Andersson](https://rsms.me/).
+
+Rasmus is a designer for Figma nowadays, but as he stated he used to be a manager and software engineer.
+In the interview he talks about what being a designer means to him. I've learner a bit more about
+designer perspective and work process, which is nice because the design is something that I would like
+to be good at.
+
+I like how he clearly outlines his way of thinking and wording.
+The choice of being IC or manager for him is a choice between with whom you'll spend
+the most time with coworkers or end-users.
+Or how he advises thinking about design skills, instead of saying desktop/android,
+he suggests thinking about stationary interface and handheld interface.
+
+I'll spend the next few days thinking about it.
+
+I hope Rasmus will spend upcoming days happy cause his typeface [Inter](https://rsms.me/inter/)
+will be the [default in Elementary OS](https://blog.elementary.io/look-and-feel-changes-elementary-os-6/#typography).
+
+### Closing notes
+
+I could go on and on. There are so many things to say.
+Unfortunately, this takes more time than I've anticipated,
+and I don't want to put pressure on myself to write a book.
+
+As I said, small steps 😉
+
+I'll end this with this [shanties cover](https://youtu.be/y12oQzvhX3g).

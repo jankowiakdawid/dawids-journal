@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-padding-top: 68px;
+}
+
+#__next {
+  @apply flex;
+  @apply flex-col;
+  @apply min-h-screen;
+}
+
+.bg-blur {
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+.text-gradient {
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.prose .no-underline {
+  text-decoration: none;
+}
+
+.border-gradient-to-r {
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.twitter-tweet.twitter-tweet-rendered {
+  @apply mx-auto !important;
+  @apply my-3;
+}
