@@ -21,6 +21,11 @@ html {
   -webkit-text-fill-color: transparent;
 }
 
+.hover\:text-gradient:hover {
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .prose .no-underline {
   text-decoration: none;
 }
@@ -28,6 +33,10 @@ html {
 .border-gradient-to-r {
   border-image-slice: 1;
   border-image-source: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.hover\:bg-gradient-to-r:hover {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
 
 .twitter-tweet.twitter-tweet-rendered {

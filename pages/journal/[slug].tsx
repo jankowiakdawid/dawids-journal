@@ -28,7 +28,7 @@ export default function Entry({ mdxSource, frontMatter }) {
 
   return (
     <article className="prose lg:prose-xl mx-auto px-2">
-      <Heading as="h1">{frontMatter.title}</Heading>
+      <h1 className="font-black">{frontMatter.title}</h1>
       <Metadata journal={frontMatter} />
       <div>{content}</div>
     </article>

@@ -11,13 +11,9 @@ export function Heading({ children, as = "h1", className = "" }: Props) {
   const hashes = "".padStart(Number(as.match(/\d/)[0]), "#")
 
   return (
-    <Component
-      className={
-        "font-black text-gradient bg-gradient-to-r from-green-400 to-blue-500 inline-block " +
-        className
-      }
-    >
-      <span className="font-mono">{hashes}</span> {children}
+    <Component className={"font-black inline-block " + className}>
+      <span className="font-mono font-semibold italic">{hashes}</span>{" "}
+      {children}
     </Component>
   )
 }
@@ -29,7 +25,7 @@ function LinkedHeading({ children, ...props }: Props) {
     <a id={id} href={`#${id}`} className="no-underline block">
       <Heading
         {...props}
-        className="border-b-4 border-gradient-to-r from-green-400 to-blue-500"
+        className="hover:bg-gradient-to-r hover:text-gradient border-b-4 border-gradient-to-r from-green-400 to-blue-500"
       >
         {children}
       </Heading>
