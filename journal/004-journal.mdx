@@ -1,132 +1,161 @@
 ---
-title: ???
+title: Simple Remix of Clubhouse
 author: Dawid Jankowiak
-summary: ???
-published: March 20th, 2021
+summary: TThis week I've reminded myself what simple code is about and that I still have a lot to learn to write it. Also, my prediction that if we use compiled languages for writing tools, they are faster may be correct. All this while Clubehause future being blurry.
+published: March 22th, 2021
 ---
 
 ## GTA Online happy ending
 
 Two weeks ago I'd shared a story about [GTA Online loading times](/journal/002-real-first#Why-GTA-Online-is-slow-to-load?),
-this week brought a resolution! In an [update](https://nee.lv/2021/02/28/How-I-cut-GTA-Online-loading-times-by-70/#Update-2021-03-15)
-t0st informerd that Rockstar reached to them and granted them with their **$10k** in-game bounty.
+this week brought a resolution! In an [update](https://nee.lv/2021/02/28/How-I-cut-GTA-Online-loading-times-by-70/#Update-2021-03-15),
+t0st informed that Rockstar reached to them and granted them with their **$10k** in-game bounty.
 Seems like time well spent on investigation!
 
-Day after bug fix got released and loading times went down to _only_ 2 mins.
+Day after bug fix got released, and loading times went down to _only_ 2 mins.
 
 ## Remixing performance
 
 <Tweet id="1372408624425836544" />
 
-What started as a joke became a self burn. But the intersting outcome of it is that I've found that maybe [Remix](https://remix.run/)
-will join [Vite](https://vitejs.dev/) in using [esbuild](https://esbuild.github.io/).
+What started as a joke became a self burn. But the interesting outcome of it is that I've found that maybe
+[Remix](https://remix.run/) will join [Vite](https://vitejs.dev/) in using [esbuild](https://esbuild.github.io/).
 
 <Tweet id="1372556911229366272" />
 
-Following the thread I've learned that [Parcel](https://parceljs.org/) file search were lately [rewriten in Rust](https://github.com/parcel-bundler/parcel/pull/5481).
-It seem that in the future Parcel may be using [SWC]()
+Following the thread, I've learned that [Parcel](https://parceljs.org/) file search has been lately
+[rewritten in Rust](https://github.com/parcel-bundler/parcel/pull/5481).
+It seems that in the future Parcel may be using [SWC](https://swc.rs/)
 
 <Tweet id="1369033422002389000" />
 
-Maybe in the future all our tooling will be writen in compiled languages providing native like speed.
-This begs a question: is it still worth while to write tools in JS?
+Maybe in the future, all our tooling will be written in compiled languages providing native-like speed.
+This begs a question: is it still worthwhile to write tools in JS?
 
 Well, probably not 😅
 
-But as [Rome](https://rome.tools/) author suggest [we may be good with TS](https://github.com/rome/tools/issues/144#issuecomment-595464330) 😉
+But as [Rome](https://rome.tools/) author suggest
+[we may be good with TS](https://github.com/rome/tools/issues/144#issuecomment-595464330) 😉
 
 ## SOLID CUPID
 
-[Dan North](https://twitter.com/tastapod?s=20) wrote why he doesn't like SOLID principles - [CUPID - the back story](https://dannorth.net/2021/03/16/cupid-the-back-story/).
-As he exlains this is based on a short talk he once gave. Based only on the [slides from this talk](https://speakerdeck.com/tastapod/why-every-element-of-solid-is-wrong) orginal author of
-[SOLID Principles](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod) - [Robert Martin](https://twitter.com/unclebobmartin?s=20) wrote
+[Dan North](https://twitter.com/tastapod?s=20) wrote why he doesn't like SOLID principles -
+[CUPID - the back story](https://dannorth.net/2021/03/16/cupid-the-back-story/).
+As he explains this is based on a short talk he once gave. Based only on the
+[slides from this talk](https://speakerdeck.com/tastapod/why-every-element-of-solid-is-wrong)
+original author of [SOLID Principles](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod) -
+[Robert Martin](https://twitter.com/unclebobmartin?s=20) wrote
 [his response](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html).
+It looks to me that there is some misunderstanding happening and that both of them expect
+the same properties from simple/clean code. As usual, the devil is in the details.
 
 ### Deconstruction
 
-This sound like a good _tech drama_, but SOLID principles were qritiqued years before by [Kevlin Henney](https://twitter.com/KevlinHenney?s=20)
-in his talk [The SOLID Design Principles Deconstructed](https://youtu.be/tMW08JkFrBA).
+That's not the first time I see SOLID principles being critiqued. Years before [Kevlin Henney](https://twitter.com/KevlinHenney?s=20)
+gave similar arguments against them in his talk [The SOLID Design Principles Deconstructed](https://youtu.be/tMW08JkFrBA).
 
 ### Simple
 
-It's impossible to not mention about fenomendal talk by [Rich Hickey](https://twitter.com/richhickey?s=20) [Simple made easy](https://www.infoq.com/presentations/Simple-Made-Easy/),
-where he digs into the meaing of word _simple_. He identifies that one of the property of simple code is that it's simple to change.
-[Dan Abramow](https://twitter.com/dan_abramov?s=20) also wrote about this in, rather shor take on [optimizing for change](https://overreacted.io/optimized-for-change/).
+It's impossible to not mention phenomenal talk by [Rich Hickey](https://twitter.com/richhickey?s=20)
+[Simple made easy](https://www.infoq.com/presentations/Simple-Made-Easy/),
+where he digs into the meaning of the word _simple_. He identifies that one of the characteristics of simple
+code is that it's simple to change. [Dan Abramov](https://twitter.com/dan_abramov?s=20) also wrote about this in,
+a rather short take on [optimizing for change](https://overreacted.io/optimized-for-change/).
 
-Also [Fred George](https://www.linkedin.com/in/fred-george) talks about simple clode in the talk
+Also, [Fred George](https://www.linkedin.com/in/fred-george) talks about simple code in the talk
 [The Secret Assumption of Agile](https://youtu.be/l1Efy4RB_kw).
-Which I like very much, cause for me at least it sounds inspireing and started me on a path to learn how to write simple code.
-Although I need to admit that it's very voughe and don't provide much evidence.
+This presentation, although not showing any code, was very inspirational for me.
+For quite some time I had the feeling that I've stopped progressing my skills.
+I knew that I had a lot to learn but no clue where to go. Fred showed me the way.
+
+He gave a few simple sounding bits of advice:
+
+- use tiny little classes, functional classes
+- don't use getters and setters
+- kill `-or`s and `-er`s in your code
+- write code that's easy to change
 
 ### Path to Simple OO
 
-Fred says that he spent years learning how to write simple code, and that we can learn too if we watch [Sandi Metz](https://twitter.com/sandimetz?s=20).
-So I've spent last two years watching Santi talks on YouTube  
-[here's](https://youtu.be/YtROlyWWhV0)
-[a few](https://youtu.be/29MAL8pJImQ)
-[examples](https://youtu.be/8bZh5LMaSmE).
-The thing all of them are for Ruby, and as simple as Ruby not its all idioms translates well to other languages.
-I also saw this critique of some of Sandi's [expamples](https://youtu.be/IRTfhkiAqPw) (but now only her code is looked into).
+Fred says that he spent years learning how to write simple code.
+He also pointed to a few resources from where we can learn this style of writing programs.
+One of them is [Refactoring by Martin Fowler](https://martinfowler.com/books/refactoring.html),
+the second would be [Smalltalk Best Practice Patterns by Kent Beck](https://www.goodreads.com/book/show/781561.Smalltalk_Best_Practice_Patterns).
+
+I didn't read Kent's book but I did the second-best thing and watched [Sandi Metz](https://twitter.com/sandimetz?s=20)
+talks on YouTube  
+[a few](https://youtu.be/YtROlyWWhV0)
+[of](https://youtu.be/29MAL8pJImQ)
+[them](https://youtu.be/8bZh5LMaSmE).
+All of them are in Ruby, and as simple as Ruby is, not all its idioms translate well to other languages.
+I also saw this critique of [OO code](https://youtu.be/IRTfhkiAqPw).
 
 ### Let's just wait
 
-This is huge topic, and I don't have neither time nor will power to give it true justice.
-So lets wait what Dan will show us in a followup story.
+This is a huge topic, and I have neither time nor willpower to give it true justice.
+So let us wait for what Dan will show us in a follow-up story.
 
 ### Write simply
 
-While we wait lets consider one more thing. At 2019 React Conf [Jenn Creighton](https://twitter.com/gurlcode?s=20) give a talk [React is Fiction](https://youtu.be/kqh4lz2Lkzs).
-In it she draws comaprisons between writing fictions and writing React components.
-Starting from classical _"Show, don't tell"_, going through character (component) motivations, and writing what you know, to rewriting.
-I really like how almost all quotes she presented can apply directly to the craft of _writing_ programs.
+Maybe while waiting let's consider one more thing. At the 2019 React Conf [Jenn Creighton](https://twitter.com/gurlcode?s=20)
+give a talk titled [React is Fiction](https://youtu.be/kqh4lz2Lkzs).
+In it, she draws comparisons between writing fiction and writing React components.
+Starting from classical _"Show, don't tell"_, going through character (component) motivations,
+and writing what you know, to rewriting. I really like how almost all quotes she presented can apply
+directly to the craft of _writing_ programs.
 
-Lately [Paul Graham]() wrote an essey on [writing simply](http://paulgraham.com/simply.html). He clearly talks about writing esseys,
-but it's not a long streach to view it by prism of _writing_ programs. One of the very first thing I've learnd in my first job was
-that I don't need to use every esoteriq feature of a language to make the code fit into least amount of lines. That it's easier
-for others (and my future self) when I use ordinar constructs and well known patterns.
+Lately, [Paul Graham](https://twitter.com/paulg) wrote an essay on [writing simply](http://paulgraham.com/simply.html).
+He clearly talks about writing essays, but it's not a long stretch to view it by a prism of _writing_ programs.
+
+One of the very first things I've learned in my first job was that I don't need to use every esoteric feature of
+a language to make the code fit into the least amount of lines. That it's easier for others (and my future self)
+when I use ordinary constructs and well-known patterns.
 
 Reducing jargon is also one of the core [technical philosophies of Rome](https://rome.tools/#technical).
 
 ## Clubhouse
 
 An [emerging social platform](https://www.joinclubhouse.com/) somehow found in the center of my interest this week.
-Which is quite strange as I don't own iPhone so I cannot join.
+This is quite strange as I don't own iPhone so I cannot join.
 
 ### DogeHouse
 
 But first I've run into a [DogeLog](https://youtu.be/1PBNAoKd-70).
-It wasn't the first time I've heard about the project, I saw the introduction video where it still was an [VS Code extention](https://youtu.be/hy-EhJ_tTQo).
-As I'm more a visual person, and I get lost fast with audio only media, I ignored [DogeHouse](https://dogehouse.tv/) at first, thinking it's a joke.
-Still I don't think I'll join but it was really nice to learn about it's [architecture](https://youtu.be/8YJqB4pNNgs).
+It wasn't the first time I've heard about the project, I saw the introduction video where it still was
+ea [VS Code extension](https://youtu.be/hy-EhJ_tTQo).
+As I'm more of a visual person, and I get lost fast with audio-only media, I ignored [DogeHouse](https://dogehouse.tv/) at first,
+thinking it's a joke. Still, I don't think I'll join but it was really nice to learn about
+its [architecture](https://youtu.be/8YJqB4pNNgs).
 
-### Hypotetical future of Clubhouse
+### Hypothetical future of Clubhouse
 
 Then I've run into this thread
 
 <Tweet id="1371972261004070913" />
 
 It's long so if you prefer [here's a blog version of it](https://mythreadreader.com/ShaanVP/1371972261004070913).
-The qist it that Clubhouse focus real-time audio only may be really hard to scale to bigger audiance, and in time people will got bord with it.
+The gist is that Clubhouse's focus on real-time audio-only may be really hard to scale to a bigger audience,
+and in time people will get bored with it.
 
 ### Competition
 
 I also got reminded that [Kent C Dodds](https://twitter.com/kentcdodds) build a similar feature into his
 [Discord Community](https://kentcdodds.com/discord), called [Meetup](https://kentcdodds.com/meetups/#so-what-is-it).
-Which sounds like Kent, going a step futher of being kind and inclusive to his community.
+This sounds like Kent, going a step further of being kind and inclusive to his community.
 
-Also it looks like Telegram joined the game with the release of [Voice chats 2.0](https://telegram.org/blog/voice-chats-on-steroids).
+Also, it looks like Telegram joined the game with the release of [Voice chats 2.0](https://telegram.org/blog/voice-chats-on-steroids).
 
 ## cURL
 
-Recently [cURL](https://curl.se/) celebrated it's 23rd birthdays. This was an occasion for a [reflective post](https://daniel.haxx.se/blog/2021/03/20/curl-is-23-years-old-today/).
-It's a story how a side project util tool becomes a hobby and then a men life work.
-The story of cURL is a story about building over time, slow and steady growth and persistance. Builded upon UNIX philosophy the tool
-found it's place as a backbone of modern day internet powering cars, games, TVs and what not.
-The most mind blowing thing is how it grew over all those years. From merly 2,200 to outstandsing **172,000** today!
+Recently [cURL](https://curl.se/) celebrated its 23rd birthdays. This was an occasion for a [reflective post](https://daniel.haxx.se/blog/2021/03/20/curl-is-23-years-old-today/).
+It's a story of how a side project until tool becomes a hobby and then a men life work.
+The story of cURL is a story about building over time, slow and steady growth, and persistence.
+Build upon UNIX philosophy the tool found its place as a backbone of modern-day internet powering cars, games, TVs, and whatnot.
+The most mind-blowing thing is how it grew over all those years. From merely 2,200 to an outstanding **172,000** today!
 
 ## Looping in python
 
-I've run into this short (8m 5s) video on [looping in python](https://youtu.be/Qgevy75co8c).
-Coming from JS where loop times are [quite equivelant](https://javascript.plainenglish.io/the-only-javascript-loop-benchmark-that-matters-for-the-most-of-us-77ec819eb23e)
-I was suprised to learn that there is a difference between using `while` and `for` loop in it.
-The straight forward explanation made it obvious why though. At the end I was quite blown away 🤯.
+I've run into this short (8m 5s) video on [looping in Python](https://youtu.be/Qgevy75co8c).
+Coming from JS where loop times are [quite equivalent](https://javascript.plainenglish.io/the-only-javascript-loop-benchmark-that-matters-for-the-most-of-us-77ec819eb23e)
+I was surprised to learn that there is a difference between using `while` and `for` loop in it.
+The straightforward explanation made it obvious why though. In the end, I was quite blown away 🤯.
