@@ -1,0 +1,186 @@
+---
+title: Finite patterns of machines
+author: Dawid Jankowiak
+summary: Looking at language features and considering if we need it seems that the future brings us actors and state machines.
+published: March 29th, 2021
+---
+
+## Intro to ReScript
+
+I stumbled upon an [intro talk to ReScript](https://www.youtube.com/watch?v=dFHj1d9FG8M) by Jesse Warden.
+It's worth checking up especially for comparison with other languages that compile to JS.
+Jesse gives a good overview providing both strong points as well as weaknesses.
+
+He also does a good job explaining what are the strengths of JavaScript and
+why it's worth using language that's strongly typed.
+
+## What's ReScript?
+
+It's a rebranded BuckleScript a OCaml compiler from Bloomberg with
+[ReasonML](https://reasonml.github.io/en/) syntax.
+Seeing that Reason blog didn't get any new post since 2018 I would argue that
+the whole community effort was moved to ReScript.
+
+I started looking at ReasonML almost 4 years ago. I remember how hard it was to set up on Windows,
+and how slowly it changed. I remember writing a small feature in the project I was working on at work
+to show colleagues how easy it is (they weren't so excited).
+
+I remember learning about [esy](https://esy.sh/en/) which is a package manager for Reason/OCaml.
+As well as that [OniVim 2](https://www.onivim.io/) is being written in Reason,
+and they even created its own renderer [Revery](https://www.outrunlabs.com/revery/).
+
+## One syntax different runtimes
+
+The most inspiring was when I've learned about OCaml's ability to do [unikernels](http://unikernel.org/),
+from Sean Grove's talk [From Unikernels to Databases to UIs: Truly full-stack apps in OCaml](https://youtu.be/QWfHrbSqnB0).
+
+With that and the fact that Javier Chávarri writing about
+[running React on the server with OCaml](https://www.javierchavarri.com/react-server-side-rendering-with-ocaml/)
+a year ago I was expecting that someone would write a NextJS-like framework in Reason/OCaml
+that would run as unikernel savings ton of money.
+
+I'm patient.
+
+## Upcoming Nuxt and Svelte
+
+Meanwhile Svelt announced the beta version of [SvelteKit](https://kit.svelte.dev/).
+Which is the Svelte version of [NextJS](https://nextjs.org/).
+Svelte has its roots in [Sapper](https://sapper.svelte.dev/). But in his keynote during Svelte Summit
+the author, [Rich Harris](https://twitter.com/rich_harris) explains why the change.
+I encourage you to watch [Futuristic Web Development](https://youtu.be/qSfdtmcZ4d0).
+
+Out of curiosity, I've checked what is the progress on [Nuxt](https://nuxtjs.org/) 3.
+There wasn't any official publicly available information outside of few talks
+from recent [Vue Amsterdam](https://vuejs.amsterdam/). The recordings are behind a pay-wall
+but I was able to find
+[links to the presentations](https://github.com/nuxt/nuxt.js/issues/5708#issuecomment-791559583).
+I'm awaiting it cause it should bring full support for Vue 3 and its new reactive API.
+
+### A quick sum up
+
+Both Nuxt 3 and SvelteKit will use Vite internally which means instant development builds
+with hot module reloading. Also, both are built with Serverless in mind meaning
+you'll be able to create a serverless function out of every dynamic page. Something that
+I've seen in [Next 8](https://nextjs.org/blog/next-8#serverless-nextjs) about 2 years ago.
+The future
+
+## New features
+
+This road to parity in features among frameworks is a trend that I see happening
+also with the programming languages. Not surprising cause I remember seeing
+a talk by [Erik Meijer](https://twitter.com/headinthebox) a few years back when he
+was comparing Haskell and Java, and predicting that languages will have more and
+more of the same features.
+Sadly I couldn't find a lint to it 😟
+
+### Pattern matching
+
+One of the features I liked very much in Reason was
+[pattern matching](https://reasonml.github.io/docs/en/pattern-matching.html).
+I like it also in [Rust](https://doc.rust-lang.org/book/ch18-00-patterns.html)
+and [Scala](https://docs.scala-lang.org/tour/pattern-matching.html).
+That is why I wasn't surprised to see this video about
+[pattern matching in Python 3.10](https://youtu.be/SYTVSeTgL3s).
+
+I think that pattern matching could easily substitute for the need for
+`if`s and `switch`es, and all languages will have it.
+
+There's an outgoing effort to bring it to JavaScript
+in this [proposal](https://github.com/tc39/proposal-pattern-matching).
+Sadly it's still on Stage 1.
+
+Thankfully this can be done in some way in the userland, and it was!
+You can read about it in this [introductory post](https://dev.to/gvergnaud/bringing-pattern-matching-to-typescript-introducing-ts-pattern-v3-0-o1k)
+on `ts-pattern` 3.
+
+### Guards
+
+Although pattern matching is a neat way around nested `if` statements, a while back I started
+to get suspicious about having nested `if`s in the first place.
+First I've read it in [Refactoring](https://martinfowler.com/books/refactoring.html).
+Particularly in [replacing Nested Conditional with Guard Clauses](https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html).
+Apparently, this is so good a pattern that it was promoted to
+[language feature in Swift 2.0](https://ericcerney.com/swift-guard-statement/).
+I also found that it's possible to bring it to [Kotlin](https://medium.com/swlh/swifts-guard-statement-for-kotlin-967ba580443f).
+
+I think a good intro for why avoid `if`s and focusing on guards is this
+[talk](https://youtu.be/z43bmaMwagI). Although long I found it very entertaining.
+However I find correcting [Edgar Dijkstra](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra)
+a bit hubris, but maybe if you do your research as Jules did you have right to it.
+Who am I to judge?
+
+### Type guards
+
+Let's not confuse guard clauses with [type guards](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+in TypeScript.
+For those I found [this article](https://dev.to/smeijer/typescript-type-guards-and-type-predicates-4m5e)
+to be a good explanation.
+Although it seems they changed the name, and call it _type predicates_ instead of the _guard_
+as they used in [the old handbook](https://www.typescriptlang.org/docs/handbook/advanced-types.html#user-defined-type-guards).
+
+### Actors
+
+Another feature that goes to more languages is the [actor model](https://www.brianstorti.com/the-actor-model/).
+
+<Tweet id="1371905125539799041" />
+
+Focusing mostly on the Frontend in recent years I never had a chance to try working with the
+actor model. **But** when I was looking at Reason I found the [Nact](https://nact.io/)
+framework.
+
+When I was searching for a link to the actor model I've run into David's talks from RxLive
+[Putting the "Act" in Reactive](https://youtu.be/lnmDFEriZ7Q). In the middle of the presentation
+when he was talking about message passing and showing event listeners I got reminded about
+old Twitter framework called [Flight](https://flightjs.github.io/).
+
+## Advancing in TypeScript
+
+[Mark Dalgleish](https://twitter.com/markdalgleish?s=20) introduced me to this neat pattern
+
+<Tweet id="1370951759284162565" />
+
+Fake Child is an ingenious way of not having to make parameters optional only because
+TS will yell at you.
+
+Also, [Kent C Dodds](https://twitter.com/kentcdodds/) joined the TS game and wrote about
+[how to write React components in TypeScript](https://kentcdodds.com/blog/how-to-write-a-react-component-in-typescript).
+What I like about this is that it breaks with the _tradition_ of using `React.FC<Props>`
+and arrow functions for your components. It's nice to see that others are questioning it too.
+
+I'm bringing this up cause this week I read an interesting read follow-up story about
+[Constrained Identity Function](https://kentcdodds.com/blog/how-to-write-a-constrained-identity-function-in-typescript).
+At first, reading I thought that this is something that [const assertions](https://mariusschulz.com/blog/const-assertions-in-literal-expressions-in-typescript)
+could handle, but it doesn't work with record types, and without a record, we would need to type
+functions ourselves for each operator.
+
+The second TS lesson came to me from [Christian Alfoni](https://twitter.com/christianalfoni) in a
+[video](https://youtu.be/v9TTqLIh_WI) where he tries to suggest better typing to
+[XState](https://xstate.js.org/). Sadly for me, this is too advanced yet.
+
+## State machines
+
+But Christian being Christian didn't stop there. The reason I found the typing video was
+because I watched his [CodeSandbox Architecture](https://youtu.be/Vj3SqPZT6Qs)
+explanation. Which relies heavily on state machines. I think to better understand how they will
+do it in practice you need to watch yet another of his [videos](https://youtu.be/ul_3ABrpj64)
+where he explains his small state machine implementation
+[react-states](https://github.com/christianalfoni/react-states).
+
+### State machinges in ReScript
+
+It seems that I need to give state machines a try cause the Internet brought me to this
+article that shows how the
+[state machines can work with pattern matching](https://erikras.com/blog/finite-state-machines-in-rescript)
+in ReScript.
+
+### State machines catalogue
+
+<Tweet id="1374745202200612869" />
+
+It seems that with time passing it will be harder _not_ to use a state machine 😉
+
+## Moving buildings
+
+I find fascinated by this
+
+<Tweet id="1373698826880614402" />
