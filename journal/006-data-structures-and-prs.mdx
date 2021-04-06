@@ -1,0 +1,212 @@
+---
+title: Data structures and pull requests
+author: Dawid Jankowiak
+summary: From consideration between Node, Go and Rust I go into looking at data structures and how to hide them, only to end up ranting over pull requests.
+published: April 7th, 2021
+---
+
+## Melange
+
+Last week I was writing about [ReScript](/journal/005-finite-patterns-of-machines#What's-ReScript?)
+and there was a thing I omitted because I couldn't find a link.
+
+Well, I found the week unexpectedly this week 🙂
+When [António N. Monteiro](https://twitter.com/_anmonteiro) posted on Twitter
+the new name for his fork of BuckleScript - **Melange**.
+
+<Tweet id="1375967027433644033" />
+
+I like [Frank Herbert's](https://en.wikipedia.org/wiki/Frank_Herbert) Dune universe.
+(OCaml build tool is called [Dune](https://github.com/ocaml/dune))
+
+Here is the initial story and rationale behind the fork -
+[On OCaml and the JS platform](https://anmonteiro.com/2021/03/on-ocaml-and-the-js-platform/)
+
+And here is a trailer for the upcoming [Dune movie](https://youtu.be/n9xhJrPXop4).
+
+## Deno company
+
+From other news, Deno announced its new [Company](https://deno.com/blog/the-deno-company)
+and raised $4.9M in the seed round. They'll use the money not only to make Deno more
+awesome but also to build their cloud called [Deploy](https://deno.com/deploy).
+
+It describes itself as
+
+> a distributed system that allows you to run JavaScript, TypeScript,
+> and WebAssembly close to users, at the edge, worldwide.
+
+Which I would bet is using [`deno_core` create](https://crates.io/crates/deno_core)
+underneath. Rayn talks about it numerous times in his talks as a better way of
+embedding JS runtime into other tools like databases or serverless at the edge.
+For example [at his JS fest 2019 talk](https://youtu.be/z6JRlx5NC9E?t=2268).
+
+## Out of NodeJS
+
+Rust is well known to be a performant language. That's one of its main reasons to be.
+This week I've read a comparison of Rust [Actix-Web](https://actix.rs/) and
+[ExpressJS](http://expressjs.com/).
+
+Here's the story - [ExpressJS vs Actix-Web](https://medium.com/@maxsparr0w/performance-of-node-js-compared-to-actix-web-37f20810fb1a).
+
+There are no surprises there. Long story short Rust version has a smaller memory
+footprint less CPU usage and can handle much more traffic.
+
+Why even compare the two? I would say that the so we would need to think too much
+about when to move out of Node. Node is great don't get me wrong.
+_But_ on some scale, it's not the best tool for the job.
+And comparisons like this show when would be a good moment to rethink our choices.
+
+### Going Go
+
+You may remember that a few years ago one of the biggest contributors to the Node ecosystem,
+the author of ExpressJS [TJ Holowaychuk](https://twitter.com/tjholowaychuk)
+[left Node in favor of Go](https://medium.com/code-adventures/farewell-node-js-4ba9e7f3e52b).
+
+I would say that Go is a much simpler language that Rust is a compelling reason to start with it.
+Also for NodeJS programmers the which are not used to compiling the fast compile times of
+Go programs can be easier to bear with than
+[the slowness of the Rust compiler](https://www.reddit.com/r/rust/comments/dl4c8o/is_the_rust_compiler_really_that_slow/).
+
+Ryan Dahl thinks the same, listen to his [quote from JSConf EU 2018](https://youtu.be/M3BM9TB-8yA?t=194).
+
+**But** there's always a but. At some scale, you just need more raw speed. This reminds me of the time when Discord
+[rewrote their service from Go to Rust](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
+to get more speed.
+
+## JavaScript's not slowly
+
+One reason why Ryan is pushing for performant JS/TS runtime is cause _"dynamic languages are nice for
+prototyping"_.
+
+This week I've learned that not only ExpressJS is not the fastest but also a bit outdated and not highly
+maintained these days. All this from one article about
+[how to migrate to fastify](https://www.sitepoint.com/express-to-fastify-migrate/).
+The numbers they show in their [benchmark](https://www.fastify.io/benchmarks/) is look quite good.
+I also like that they advise benchmarking for yourself.
+
+## Speeding Jest
+
+This week I've learned this little weird trick [how to speed Jest](https://ivantanev.com/make-jest-faster/).
+I tested and it looks like I could get back a 1-2s on every `npm t` run. Not much but every second
+count.
+
+I put this on top of my other trick. Which is using a faster loader like for example
+[@swc-jest](https://swc.rs/docs/usage-swc-jest).
+
+From my fast check, it seems that you get better results with `@swc/jest` than limiting workers.
+Although you may need to put more work because in two repos that I've tried I always encounter some.
+
+### Alternative
+
+Of course, you may also want to try a different runner. Like for example [uvu](https://github.com/lukeed/uvu).
+We also have [mocha](https://mochajs.org/) at work that can run 10k unit tests in 40 s.
+But I don't know how they did it...
+
+## Importance of data structures
+
+There was also another story of [going away from Node](https://acco.io/i-escaped-node).
+This time to Elixir. My takeaway from it is a story in the middle about data structures.
+It's a very nice story with a quote attributed to [Rob Pike](https://twitter.com/rob_pike) (one of Go's creators).
+
+> Data dominates. If you've chosen the right data structures and organized things well,
+> the algorithms will almost always be self-evident.
+> Data structures, not algorithms, are central to programming.
+
+### Recois scaling fix
+
+This is how [Recoil](https://recoiljs.org/) improved performance for a really large number of atoms, by using
+[a better data structure](https://recoiljs.org/blog/2021/03/22/0.2.0-released/#scaling-to-large-numbers-of-atoms).
+
+I wasn't aware that there was a scaling problem in the first place, but also I knew nothing about
+[hash array mapped trie](https://en.wikipedia.org/wiki/Hash_array_mapped_trie).
+
+### Rust BTreeMap
+
+Somewhere in many of my open tabs there was article about
+[implementing BTreeMap in Rust](https://cglab.ca/~abeinges/blah/rust-btree-case/).
+
+I think that this article is a good showcase of how complicated language Rust can be.
+It contains lifetimes, generics, and closures. That's a lot to digest at one go.
+
+If you're interested, like I were, here you can see an implementation of
+[BTree in Go](https://pkg.go.dev/github.com/google/btree).
+
+### Dataless
+
+Rob Pikes quote made me think about an email I once read from [Alan Kay](https://en.wikipedia.org/wiki/Alan_Kay)
+where he said
+
+> I wanted to get rid of data.
+
+You can find it in the answer to the question about
+[the meaning of "Object-Oriented Programming"](http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en).
+Together with little history of creating [SmallTalk](https://en.wikipedia.org/wiki/Smalltalk)
+and inspirations behind it.
+
+### Reconcilliation
+
+Although I don't have a clear understanding if it's even possible to reconcile those two quotes,
+I have a suspicion that it may be a similar
+[functional core imperative shell](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell).
+
+I'm not quite sure about what would be the order here, cause as Dan once mentioned
+React does this the other way around.
+
+<Tweet id="1093945894410571778" />
+
+My first guess is that from a Software Design perspective you can try to hide data and have them only
+as an internal implementation detail. But isn't that something that we're already doing?
+
+Maybe there's more to in the [Dataless programming memorandum](https://www.rand.org/content/dam/rand/pubs/research_memoranda/2007/RM5290.pdf)?
+
+## PRs
+
+This week [Jessica Kerr](https://twitter.com/jessitron) put into the words my frustrations about pull requests
+probably better than I would in the article titled
+[Those pesky pull requests reviews](https://jessitron.com/2021/03/27/those-pesky-pull-request-reviews/).
+
+For quite some time I grew tired of pull requests. For one because I usually have some issues with them :|
+But also because it seems to me that they make the organization slower in spaces where it's painful.
+
+I especially agree with the argument that although they can be a good tool for open source
+they don't make especially too much sense in a company environment.
+
+Her article brings much-appreacieted acknowledgment to my fillings cause many of
+my colleagues are way more enthusiastic about PRs than I am.
+
+### Limbo
+
+Another person from which I've heard criticism of sort was [Kent Beck](https://twitter.com/KentBeck)
+when talking about his time at Facebook. Kent went a step further and propose a solution of a sort.
+About both you can read in his post -
+[Libmo: Scaling Software Collaboration](https://medium.com/@kentbeck_7670/limbo-scaling-software-collaboration-afd4f00db4b).
+
+I'm aware that this could sound chaotic at first, but Kent has a good track record of implementing
+and making popular oddly sounding ideas
+([XP](http://www.extremeprogramming.org/), [TDD](https://en.wikipedia.org/wiki/Test-driven_development)).
+
+### Dark
+
+Maybe the future is closer than we think if we take into consideration that
+[Dark can deploy code in 50ms](https://medium.com/darklang/how-dark-deploys-code-in-50ms-771c6dd60671).
+
+Why spend the whole day reviewing code that can be put in prod, or taken down, faster than you can read this line?
+
+### History
+
+In [2006 Guido van Rossum presented "Mondrian"](https://trunkbaseddevelopment.com/game-changers/index.html#mondrian-2006)
+to Googlers, one of the first web-based code review platform. During his talk, he mentions
+[that code review is the best alternative to pair programming](https://youtu.be/sMql3Di4Kgc?t=325).
+So maybe if you can it's better to do pair programing than bother with code review 🤔
+
+### Future
+
+Or maybe I'm biased only because of the lack of better tools?
+A few years ago I was reading about a
+[tool for code reviews from Jane Street](https://blog.janestreet.com/putting-the-i-back-in-ide-towards-a-github-explorer/).
+Iron was quite an Iron Tower for me, it is an internal tool of theirs and requires Emacs.
+
+Fortunately, nowadays there's a similar tool for [GitHub and VS Code](https://code.visualstudio.com/docs/editor/github).
+Unfortunately, I wasn't able to run it for the On-Premise Enterprise version of GitHub.
+
+Maybe I should try [CodeStream](https://www.codestream.com)...
