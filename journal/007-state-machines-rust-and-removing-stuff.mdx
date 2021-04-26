@@ -1,0 +1,206 @@
+---
+title: State machines, Rust and removing stuff
+author: Dawid Jankowiak
+summary: Deno is supporting WebGPU and that may have an impact on data processing. State machines got interesting DSL and became primitive for application architecture. Publication about the additive manner of problem-solving.
+published: April 26th, 2021
+---
+
+## WebGPU
+
+Last time I was writing about [Deno Company](/journal/006-data-structures-and-prs#Deno-company)
+I totally skipped the fact that Deno has experimental support for
+[WebGPU since 1.8](https://deno.com/blog/v1.8#experimental-support-for-the-webgpu-api).
+
+The reason they added this and I quote:
+
+> Our goal is to run Tensorflow.js on Deno, with GPU acceleration.
+
+I was skeptical about this goal until I've read
+[Javascript and the next decade of data programming](https://benschmidt.org/post/2020-01-15/2020-01-15-webgpu/).
+This gave me another perspective and made me cheer for Deno team even more.
+
+**tl;dr** is that nowadays JavaScript is the fastest scripting language, and with the power of WebGPU it can
+tap into the native performance of video cards making it even faster, especially for generating graphs.
+The article is really interesting and I recommend reading it, plus has some nice visualizations.
+
+What I especially like about Deno supporting WebGPU is that Deno has TypeScript built into it.
+I remember reading a few years ago an article about why using Go for data science is better than Python.
+The premise, as far as I remember, was that Go is better suited because it is compiled language.
+The combination of speed and type safety was better for production-grade programs than ad hoc script written
+in Python.
+
+Deno provides [compile command](https://deno.land/manual/tools/compiler) and comes with TypeScript built-in.
+So maybe in few years, Deno will be the platform to go for data-intensive computations and reports 🤔
+
+## States machines
+
+This was an exciting time for State Machines.
+
+### States architecture
+
+I was writing about [react-states](https://www.npmjs.com/package/react-states)
+[a few weeks ago](/journal/005-finite-patterns-of-machines#State-machines).
+[Christian Alfoni](https://www.twitter.com/christianalfoni) put a lot of work into it and the lib is at
+version `5.4` nowadays, which I find as unextraordinary progress.
+
+A few days ago Christian published an in-depth overview of the whole [architecture](https://react-states.csb.dev/).
+This is a lot to take in but it comes with an [example project](https://github.com/codesandbox/excalidraw-firebase).
+If you want you may watch how this project came to fruition you can see
+[the streams on YouTube](https://www.youtube.com/user/chjo2113/videos), only shame there's no dedicated playlist.
+
+The architecture combines few good practices I've observed throuot the years.
+It splits the apps into modules based on the features. It has an opinionated folder structure, containing
+`pages`, it extracts the environment into its own entity which makes it easy to test, and also all interactions
+are driven by state machines, which makes it predictable.
+
+### Lucy
+
+One of the reasons I didn't use state machines in my day-to-day work is the amount of boilerplate
+and convoluted configuration (in my opinion) that [XState](https://xstate.js.org/) requires.
+This may all change thanks to [Lucy](https://lucylang.org/). A dedicated language for Finite State Machines.
+
+As described in [the announcement post](https://matthewphillips.info/programming/posts/announcing-lucy/).
+Lucy compiler is written in C for performance and it has plugins for [Vite](https://vitejs.dev/),
+[Snowpack](https://www.snowpack.dev/), and [Rollup](https://rollupjs.org/guide/en/).
+Oddly as of the time of this writing [Webpack](https://webpack.js.org/) plugin is missing...
+
+### Not yet named
+
+But don't be sad. Lucy isn't only DLS for State Machines. Apparently, the idea is so good others
+had it too and came up with a bit different implementation.
+
+For now, there's not as much to see, only this tweet.
+
+<Tweet id="1385986489797029894" />
+
+But it looks quite promising!
+The syntax is quite similar and it seems to be a _"simple"_ library.
+Most of the heavy lifting is done via
+[tagged templates](https://exploringjs.com/impatient-js/ch_template-literals.html#tagged-templates).
+One could wish JavaScript had macros.
+
+### FMS macro for Rust
+
+Like this Rust crate [rust-fsm-dsl](https://crates.io/crates/rust-fsm-dsl). Which offers a bit different syntax.
+
+To be completely honest I didn't use it. It just popped up in search results when I was searching for different
+DSLs. But it serves as a nice transition to talk about Rust.
+
+## Rust popularity
+
+A few weeks ago Google shared its progress on integrating
+[Rust in Android](https://security.googleblog.com/2021/04/rust-in-android-platform.html).
+This makes it yet another Operating System that uses Rust to try to minimize the number of bugs in OS
+by using languages with better memory safety.
+
+### Reminder
+
+Microsoft is [using Rust in Windows](https://msrc-blog.microsoft.com/2019/11/07/using-rust-in-windows/) since 2019.
+Also, [Linux is adopting Rust](https://arstechnica.com/gadgets/2021/03/linus-torvalds-weighs-in-on-rust-language-in-the-linux-kernel/).
+Although in this case they more experiment with it, and it's an effort driven by Rust enthusiasts.
+
+And the Rust community has a lot of them!
+
+<Tweet id="https://twitter.com/mozhacks/status/1386533367072579584?s=20" />
+
+### Learning
+
+Rust can be a tough language to learn, it has a lot of concepts. Thankfully there are a plethora of
+free resources to learn from. Starting with [an official book](https://doc.rust-lang.org/book/).
+
+But I found two different that are way more interesting although they come with some drawbacks.
+
+#### Game
+
+First is [roguelike](https://tomassedovic.github.io/roguelike-tutorial/index.html) which is a tutorial
+for writing a roguelike game in Rust. It has an external dependency on [libtcod](https://github.com/libtcod/libtcod)
+and for some reason, I have an issue that I cannot resolve on my laptop
+
+```
+24 bits font.
+key color : 0 0 0
+24bits greyscale font. converting to 32bits
+thread 'main' panicked at 'attempted to leave type `bindings::ffi::TCOD_key_t` uninitialized, which is invalid', /rustc/e1884a8e3c3e813aada8254edfa120e85bf5ffca\library\core\src\mem\mod.rs:659:9
+```
+
+This is weird cause I didn't have such problems on PC.
+Also, this tutorial doesn't use the Rust module system so the whole code is in one 2k long file.
+
+#### Editor
+
+The second is [hecto](https://www.philippflenker.com/hecto/). It's a tutorial that focuses on how to write
+a console-based editor. This one on the other hand requires some Linux-specific dependencies and thus does not
+work on Windows at all.
+
+Thankfully nowadays Windows comes with WSL which makes it easy to solve. Sadly not all editors
+support WSL yet. [VS Code](https://code.visualstudio.com/docs/remote/wsl) has it and it recently was added to
+[IntelliJ](https://www.jetbrains.com/idea/whatsnew/#wsl-2-support), but my editor of choice for working
+with Rust [OniVim](https://onivim.github.io/) does not at the moment.
+
+## WSLg
+
+This brings me to the exciting development in WSL. If you have insiders build (I don't)
+you can try out updating and using Linux desktop application in your Windows.
+[Scott Hanselmann](https://www.hanselman.com/about) wrote detailed
+[instructions on how to do it](https://www.hanselman.com/blog/how-to-run-linux-gui-apps-on-windows-10-with-wsl-and-wslg).
+
+If you're interested the team behind WSLg wrote an
+[architecture overview](https://devblogs.microsoft.com/commandline/wslg-architecture/).
+It's a bit complicated architecture that required a lot of stuff to be added.
+
+## Nature of problem-solving
+
+Let's start with a couple tweets that play very nice together.
+
+<Tweet id="1381250433012785153" />
+
+<Tweet id="1375334137465339904" />
+
+I think those two are connected. When we practice _Ego Driven Development_ we're optimizing for things that
+sound challenging and exciting. Refactoring on the other hand sounds boring. Keeping the "legacy" system
+in shape is challenging and doesn't provide much visibility, on the other hand starting new projects allows us to
+play with a new tech stack.
+
+Also as Jakub Nabrdalik said in his JDD talk in 2019 about
+[common mistakes in a microservice architecture](https://youtu.be/Ei64m2rrhv4?t=995).
+
+> People who make decisions, and don’t have to live with the consequences (of these decisions), make stupid decisions
+
+There's a lot of truth in here.
+
+Lately, there was a paper published in Nature talking about
+[adding being a favored](https://www.nature.com/articles/d41586-021-00592-0) solution in problem-solving.
+
+I think this may play a part in why we mostly adding new features, creating new libraries, starting new projects.
+Greenfields projects are more exciting than brownfield ones, but with time all of them are the same.
+A bunch of outdated, overengineered, badly architected legacy code that someone that never met original
+authors needs to maintain.
+
+I went a bit too dark here.
+
+> Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.
+
+― Antoine de Saint-Exupéry, Airman's Odyssey
+
+### Spotify consolidation
+
+There is some kind of art in keeping long-living projects in shape. Even better when one puts effort into bringing
+stuff together and reuses as much as possible. Even better when one can consolidate few projects into one.
+Like Spotify did when then brought together
+[Web and Desktop clients into one app](https://engineering.atspotify.com/2021/04/07/building-the-future-of-our-desktop-apps/).
+
+This article doesn't answeres all questions, like do they use the same code for Xbox, Playstation, Car, TV, Speaker?
+Did they consider [React Native](https://reactnative.dev/)
+([Web](https://necolas.github.io/react-native-web/),
+[Desktop](https://microsoft.github.io/react-native-windows/))?
+Or [Flutter](https://flutter.dev/). Probably too big a rewrite...
+
+## JSX generic syntax
+
+<Tweet id="https://twitter.com/wcandillon/status/1386413737263960064?s=20" />
+
+This tweet was commented by many people I observe so I eventually
+went inside the thread to find a great article by
+[Martin Schultz](https://twitter.com/mariusschulz)
+explaining how this works and why it's useful -
+[Passing Generics to JSX Elements in TypeScript](https://mariusschulz.com/blog/passing-generics-to-jsx-elements-in-typescript).
