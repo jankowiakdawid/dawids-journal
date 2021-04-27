@@ -9,14 +9,16 @@ export default function Index({ journals }) {
   return (
     <div className="max-w-prose mx-auto px-2 text-xl">
       {journals.map((journal) => (
-        <Link href={`/journal/${journal.slug}`} key={journal.title}>
-          <a className="mb-20 block">
-            <article className="transition-shadow hover:shadow-lg py-2 px-3 rounded-lg">
-              <h4 className="font-black text-2xl">{journal.title}</h4>
-              <Metadata journal={journal} />
-            </article>
-          </a>
-        </Link>
+        <div className="mb-20" key={journal.title}>
+          <Link href={`/journal/${journal.slug}`}>
+            <a>
+              <article>
+                <h4 className="font-black text-2xl">{journal.title}</h4>
+                <Metadata journal={journal} />
+              </article>
+            </a>
+          </Link>
+        </div>
       ))}
     </div>
   )
