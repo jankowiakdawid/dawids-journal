@@ -19,7 +19,7 @@ export function Metadata({ journal }: Props) {
         <span>
           {journal.wordCount} words, {journal.readingTime.text}
         </span>
-        <span>{journal.published}</span>
+        <time dateTime={journal.published}>{journal.published}</time>
       </p>
     </>
   )
