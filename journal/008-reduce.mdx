@@ -1,0 +1,241 @@
+---
+title: Reduce
+author: Dawid Jankowiak
+summary: A quick take on reducing arrays to objects.
+published: May 24th, 2021
+---
+
+I've opened Twitter today to see this
+
+<Tweet id="1396252890721918979" />
+
+Telling everybody that it's better to use `.filter` `.map` and `.reduce` that
+doing everything in one go.
+
+Then [Jamie](https://twitter.com/buildsghost?s=20) tweeted
+
+<Tweet id="1396504576413470720" />
+
+Concerned about performance.
+
+But it's cheap to talk showing some little examples and not measuring anything.
+My procrastination hit me and I felt the urge to measure it!
+
+Sadly, the [jsperf.com](https://jsperf.com/) isn't working. So I needed to find a different way.
+Fortunately, we now have [`console.time`](https://developer.mozilla.org/en-US/docs/Web/API/Console/time)
+so I've prepared small examples to test it.
+
+## Bug
+
+Before we start there's one thing we should mention. Theres a bug in the tweet.
+The proposed solution
+
+```
+users
+  .filter((user) => !user.active)
+  .map((user) => ({ [user.id]: user.name }))
+  .reduce(Object.assign, {});
+```
+
+If run on this example data set
+
+```
+let users = [
+  { id: 1, active: false, name: 'Hank' },
+  { id: 2, active: false, name: 'John' },
+];
+```
+
+will be unexpetedly
+
+```
+{ '0': { '1': 'Hank' }, '1': { '2': 'John' }, '2': 'John' }
+```
+
+In order to understand why is that we need to look at `reduce`
+[documention](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce).
+There we will notice that the syntax can be
+`reduce((accumulator, currentValue, index, array) => { ... }, initialValue)`
+and that last argument is the culprit here.
+
+You see, `Object.assign` as its [docs page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+say
+
+> copies all enumerable own properties from one or more source objects to a target object
+
+> _enumerable own properties_
+
+Let's see what happens here.
+
+1. The first call of the reduce would have the following argument passed to it:
+
+```
+  reduce({}, { 1: 'Hank' }, 0, [{ 1: 'Hank' }, { 2: 'John' }])
+```
+
+And the same arguments would be passed to `Object.assign`.
+
+The first one is an initial empty object as the target.
+The second one is the first result from `.map`.
+
+Until here we would be good, the result would be simply `{1: 'Hank'}`.
+But we still have few arguments left. The next one is the array index `0`.
+Numbers don't have enumerable properties so we're good, the result would still,
+be `{1: 'Hank'}`.
+And then there's the last argument, the array.
+We can check what are array enumerable properties with
+[`Object.getOwnPropertyDescriptors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors).
+
+the result is:
+
+```
+{
+  '0': {
+    value: { '1': 'Hank' },
+    writable: true,
+    enumerable: true,
+    configurable: true
+  },
+  '1': {
+    value: { '2': 'John' },
+    writable: true,
+    enumerable: true,
+    configurable: true
+  },
+  length: { value: 2, writable: true, enumerable: false, configurable: false }
+}
+```
+
+Two enumerable properties.
+This is what we're getting as a result
+
+```
+{ '0': { '1': 'Hank' }, '1': { '2': 'John' } }
+```
+
+Notice how we shadowing the previous `1: 'Hank'` with `'1': { '2': 'John' }`.
+
+2. Then the `.reduce` would carry on and applied the second set of arguments that would be
+
+```
+.reduce(
+  { '0': { '1': 'Hank' }, '1': { '2': 'John' } },
+  { '2': 'John' },
+  1,
+  [{ 1: 'Hank' }, { 2: 'John' }]
+)
+```
+
+And the same things would happen. But this time we also get a surprising result.
+
+```
+{ '0': { '1': 'Hank' }, '1': { '2': 'John' }, '2': 'John' }
+```
+
+We have doubled the last entry, but somehow it got flattened.
+Well, this time it's just the fault of the example. This is because we have two facts.
+First I have simple numbers as `id`s. Second `Object.assign` applies entries from left to
+right shadowing the ones with overlapping property names.
+There was not a property name called `2` in the resulting object so it was applied, and the array
+enumerable properties don't have a property called `2` either so it wasn't shadowed by anything.
+
+### Conclusion
+
+As [Jake Archibald]() was warning
+[don't use functions as callbacks unless they're designed for it](https://jakearchibald.com/2021/function-callback-risks/)
+and `Object.assign` wasn't.
+
+## Performace
+
+Let's bet back to check the performance.
+I've prepared a [gist](https://gist.github.com/jankowiakdawid/78efb8199ebe49a046f3f5c258a9fab0) with
+few examples.
+There I have a few examples:
+
+1. Original example
+
+```
+users.reduce((acc, user) => {
+  if (!user.active) {
+    return acc;
+  }
+  return { ...acc, [user.id]: user.name };
+}, {});
+```
+
+2. Original buggy proposed improvment
+
+```
+users
+  .filter((user) => !user.active)
+  .map((user) => ({ [user.id]: user.name }))
+  .reduce(Object.assign, {})
+```
+
+3. Fixed with object spread and dropped `.map` because it wasn't needed
+
+```
+users
+  .filter((user) => !user.active)
+  .reduce((acc, user) => ({ ...acc, [user.id]: user.name }), {});
+```
+
+4. Fixed with object property assign, still witout uneeded `.map`
+
+```
+users
+  .filter((user) => !user.active)
+  .reduce((acc, user) => {
+    acc[user.id] = user.name;
+    return acc;
+  }, {});
+```
+
+Notice how we must have explicit return here.
+
+5. How I would write it using [`Object.fromEntries`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries)
+
+```
+Object.fromEntries(
+  users
+    .filter((user) => !user.active)
+    .map((user) => [user.id, user.name])
+);
+```
+
+6. `for of` that Jamie proposed
+
+```
+let inactiveUsers = {};
+for (let user of users) {
+  if (!user.active) {
+    inactiveUsers[user.id] = user.name;
+  }
+}
+```
+
+7. And classical `for` loop, just because
+
+```
+let inactiveUsers = {};
+for (let i = 0, length = users.length; i < length; i++) {
+  let user = users[i];
+  if (!user.active) {
+    inactiveUsers[user.id] = user.name;
+  }
+}
+```
+
+I've run these examples with variant array size in Node to compare how do they perform.
+
+### Results
+
+|                    |           10 |          100 |        1_000 |        10_000 |                 100_000 |                 200_000 |        500_000 |      1_000_000 |
+| :----------------- | -----------: | -----------: | -----------: | ------------: | ----------------------: | ----------------------: | -------------: | -------------: |
+| 1. Original reduce | 0.052<br/>ms |   0.3<br/>ms | 3.002<br/>ms | 60.703<br/>ms |            15.464<br/>s | 1:02.683<br/>(m:ss.mmm) |          _N/A_ |          _N/A_ |
+| 2. Buggy solution  | 0.087<br/>ms | 2.492<br/>ms | 63.19<br/>ms |   4.935<br/>s | 9:46.291<br/>(m:ss.mmm) |                   _N/A_ |          _N/A_ |          _N/A_ |
+| 3. Spread fix      |  0.08<br/>ms | 0.513<br/>ms |   0.6<br/>ms | 39.698<br/>ms |            15.965<br/>s | 1:06.773<br/>(m:ss.mmm) |          _N/A_ |          _N/A_ |
+| 4. Access prop fix | 0.049<br/>ms | 0.155<br/>ms | 0.155<br/>ms |  1.612<br/>ms |           15.596<br/>ms |           18.328<br/>ms |  46.152<br/>ms | 130.901<br/>ms |
+| 5. `fromEntires`   | 0.137<br/>ms | 0.145<br/>ms | 0.183<br/>ms |  2.134<br/>ms |           24.653<br/>ms |           45.031<br/>ms | 109.993<br/>ms | 382.744<br/>ms |
+| 6. `for of`        | 0.113<br/>ms | 0.049<br/>ms | 0.158<br/>ms |  0.883<br/>ms |           17.904<br/>ms |           19.687<br/>ms |  51.075<br/>ms |  72.917<br/>ms |
+| 7. calssical `for` | 0.055<br/>ms | 0.046<br/>ms | 0.247<br/>ms |  0.682<br/>ms |           14.649<br/>ms |           10.656<br/>ms |  21.901<br/>ms |  53.893<br/>ms |

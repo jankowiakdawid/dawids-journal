@@ -10,6 +10,7 @@ import { Metadata } from "../../components/Metadata"
 import { Heading, Headings } from "../../components/Heading"
 import { Tweet } from "../../components/Tweet"
 import { Link } from "../../components/Link"
+import { Table } from "../../components/Table"
 
 const components = {
   img: Image,
@@ -18,6 +19,7 @@ const components = {
   h3: Headings.H3,
   h4: Headings.H4,
   a: Link,
+  table: Table,
   Tweet,
 }
 
