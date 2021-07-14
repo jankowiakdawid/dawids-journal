@@ -1,0 +1,171 @@
+---
+title: Naming composition
+author: Dawid Jankowiak
+summary: This week I've learned about precedent bias and different ways of writing polymorphic code in Rust. I've also refreshed my knowledge about composing react components and dived into JS quirks with Jake. Lastly, I remind myself how to compose components and name things.
+published: July 14th, 2021
+---
+
+## Precedent bias
+
+Here's a thread from [Julian](https://www.julian.com/) about Precedent bias
+
+<Tweet id="1411796109408620546" />
+
+Its stats with [AirBnB](https://www.airbnb.com/) as a first example of why we're so bad at predicting
+outcomes when we don't have anything similar to compare it to in our recent memory. This is what
+Julian calls a **Precedent bias**. Later in a thread, he talks about COVID and climate change.
+
+I wasn't able to find any more literature on the subject so this may be only Julians observation.
+I found it interesting though. This is, I think, a good example of how by only thining in analogies
+we can dismiss big things.
+
+## Polymorphism in Rust
+
+If you watch some of the [Sandi Metz](https://sandimetz.com/about) talks that I've linked
+[some time ago](http://localhost:3000/journal/004-simple#Path-to-Simple-OO),
+you may remember that polymorphism is a handy tool for simplifying your programs.
+
+It's not solely restricted to OOP style. Rust has a feature that supports writing
+similarly to object-oriented. In his [post](https://oswalt.dev/2021/06/polymorphism-in-rust/),
+[Matt](https://twitter.com/mierdin/) is using
+[Traits](https://doc.rust-lang.org/stable/book/ch10-02-traits.html#traits-defining-shared-behavior)
+and [Generics](https://doc.rust-lang.org/stable/book/ch10-01-syntax.html#generic-data-types)
+to mimic what would be inheritance. But the true spotlight lies on the dispatching of the messages.
+
+Rust has two ways of dispatching a dynamic one and a static one. Matt goes into the details
+about their differences and clearly shows the tradeoffs one needs to consider when choosing one of them.
+
+## Zero cost abstractions in Rust
+
+While we talking about Rust, I've also watched a talk by [Michael Barber]()
+about how [zero-cost abstractions](https://youtu.be/JCGjjk5ccV0) work in Rust.
+He compares iterators in C#, Java, and Rust. Not surprisingly Rust is the fastest. The biggest
+shock was that Rust does that with code that looks on the same level of abstraction as C#, meaning
+map filtering through the iterator. The second part of the talk focuses on how
+[SIMD](https://en.wikipedia.org/wiki/SIMD) works and compares generated assembler codes.
+
+## Jake's web course
+
+Lately, (Jake Archibald)[https://twitter.com/jaffathecake] started to write about some quirky low
+level-web stuff. There's never too late to better know the technology, even if this is not especially
+useful in day to day job.
+
+Let's see them in order and I'll try to quickly summarize without too much spoilers.
+
+### Returns
+
+In [JS functions, the 'last' return wins](https://jakearchibald.com/2021/last-return-wins/)
+Jake looks at how the `return` keyword works in JS. Despite the title, it isn't as bad as you may think,
+taking into account the JS reputation for quirkiness. Just be mindful about the `finally`.
+
+### FormData and URLSearchParams
+
+Next, he teaches us about
+[Encoding data for POST requests](https://jakearchibald.com/2021/encoding-data-for-post-requests/).
+Going into more details than Ryan did in his little tweet
+
+<Tweet id="1330360556889452545" />
+
+This post is a well-written intro to both
+[FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) and
+[URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams).
+
+### Import/Export semantics
+
+The last one I've read in the last week [`export default thing` is different to `export { thing as default }`](https://jakearchibald.com/2021/export-default-thing-vs-thing-as-default/).
+In this one, it seems that Jake does his impression of
+[2ality](https://2ality.com/index.html) and describes how
+different ways of exporting and/or importing things from JS modules impact what this thing will become.
+
+This needs a focused read and problably even a few rereads to fully grasp. Or at least only I had a problem
+with remembering everything after one go.
+
+## Dev life satire
+
+Remember those jokes where on the interview they ask you how to invert binary tree `:wink:` and on the job
+you need to change the color of the button? Did you ever wonder how would your day look like
+if those types of questions would be representative of what you do on daily basis at the job?
+Wonder no more, here's how
+[a day in the life of a professional software engineer](https://www.darkcoding.net/software/a-day-in-the-life-of-a-professional-software-engineer/)
+looks like 🤣
+
+## Composing components
+
+Composition is a very powerful tool in programming that allows us to reuse pieces of code in form
+of functions or classes or even programs to easily build even more useful and/or opinionated
+functions, classes, or even programs.
+
+In modern component-based UI Frameworks, it's one of the cornerstones of good designs.
+
+This week I was looking at three different videos describing what composition is, what power it gives,
+and how to use it effectively.
+
+### For beginners
+
+The first one is from [Maximilian](https://twitter.com/maxedapps)
+[What is 'Composition' in React, Angular, or Vue](https://youtu.be/of7isf3YBZ4) its a shot video with
+it's 4 minutes run, with a bit misleading title. The code shown is only in React although he says
+what to use in other frameworks. The example shown is a simple Alert component in two variants.
+Short, concise with an easy-to-understand example. Very good for beginners, or as a first step
+to understanding what a composition is.
+
+### One component multiple usages
+
+The second one is by [Kent C Dodds](https://twitter.com/kentcdodds).
+Kent is well known React educator and open source contributor. He's also an author of
+[Downshift](https://kentcdodds.com/blog/introducing-downshift-for-react).
+A set of primitives to build a select component that handles all the complicated logic of
+a select component but none of the UI styles, so you can easily create the select you want.
+
+In his video about [react component composition](https://youtu.be/eLNS6GMejjw) he shows what cool things
+you can achieve by using composable components. He uses the same techniques he used for building
+Downshift, so this is a bit higher level. You need to be familiar with
+[render props](https://reactjs.org/docs/render-props.html) patterns.
+But in the return, you get an insight into how to build a very elastic accordion
+component and then reuse it to build a tab component! And there's even a
+[codesandbox link](https://codesandbox.io/s/924217jvro) to the example, so you can look at the code.
+
+### Composing whole pages
+
+The third video is from [Michael Jordan](https://twitter.com/mjackson) from
+[React Training](https://reacttraining.com/).
+He's also an author of [React Router](https://reactrouter.com/) and [Remix](https://remix.run/).
+
+This is the longes video in those three, and yet another take on how the composition can be used.
+Michael shows how to avoid prop drilling and not to use
+[`React.Context`](https://reactjs.org/docs/context.html) for it.
+
+Here we learn how using `children` we can make our components be slim-lined and not do too much.
+This way of writing components will produce more opportunities for reusing components, and also
+require touching fewer components when change is needed.
+
+### Conclusion
+
+Composition is a very powerful technique used to write elastic components ready for change.
+In React it can be achieved in numerous ways and places. All this is for us to build programs
+that are, how [Dan Abramov](https://twitter.com/dan_abramov) puts it,
+[optimized for change](https://overreacted.io/optimized-for-change/).
+
+## Variable names
+
+I've run across an article about how to
+[name the variables](https://blog.thepete.net/blog/2021/06/24/explaining-variable/)
+by [Pete](https://twitter.com/ph1).
+This reminded me about [Dan North](https://twitter.com/tastapod)'s chapter in
+[97 things every programmer should know](https://www.oreilly.com/library/view/97-things-every/9780596809515/#:~:text=97%20Things%20Every%20Programmer%20Should%20Know%201%20Act,Choose%20Your%20Tools%20with%20Care%20More%20items...%20)
+about [coding in the language of the domain](https://github.com/97-things/97-things-every-programmer-should-know/blob/master/en/thing_11/README.md)
+Also my colleague [Wolfram](https://twitter.com/wolframkriesing?s=20)
+once write his method of naming, which is similar to Pete's,
+[five steps to a meaningful function name](http://www.uxebu.com/index.html%3Fp=3048.html).
+
+This made me to rewatch [Date Thomas's](https://twitter.com/pragdave)
+remarkable talk about [transforming programming](https://youtu.be/iLMiPhYVG8w).
+Dave shows his technique to decompose programs which is fairly similar to the two above.
+
+I like this talk because it's straight to the point and simple to understand.
+Also, it touches on some important life topics and gives life advice like
+
+> Don't use labels.
+
+Dave also shutters the long-lasting debate about object orientation vs functional programming
+showing it's mostly the same thing.
