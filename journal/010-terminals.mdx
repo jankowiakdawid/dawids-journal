@@ -1,0 +1,192 @@
+---
+title: Terminals Stitches and keys
+author: Dawid Jankowiak
+summary: A resurgent interest in terminals brings some novel ideas to the table. Stitches is getting more publicity, and Dan is explaining the key prop.
+published: July 24th, 2021
+---
+
+## Terminals
+
+## Cool kid on the block
+
+Suddenly out of nothing I run on a blog post introducing
+[a new terminal - Wrap](https://blog.warp.dev/the-terminal-is-on-life-support-is-it-worth-saving/).
+A few weeks ago I was wondering why we stopped having better UI for things in
+our Editors, and here comes better UI for the terminal. Nice validation.
+It has an impressive set of features. Being able to navigate when writing
+a command *with* multi-cursor support seems mind-blowing.
+Integrated autocomplete looks similar to [Fig](https://fig.io/).
+Although collaboration features like shared sessions and chat, look good for
+remote pairing when problem-solving, I'm a bit worried that this will make
+this terminal expensive and subscription model.
+
+Is it a viable idea to pay a monthly fee for a terminal?
+Or maybe the terminal will be free and one would need to go PRO for sharing?
+🤔
+
+## Why so slow?
+
+The other reason discovering Wrap was interesting to me is that I found it the day
+after watching [Casey Muratori's](https://twitter.com/cmuratori?s=20)
+stream about [refterm](https://youtu.be/hxM8QmyZXtg).
+His demo showcasing how fast terminals should be in rendering text, and why
+we shouldn't be so excited about
+[Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab)
+despite [it's many features](https://www.hanselman.com/blog/how-to-use-open-resize-and-split-panes-in-the-windows-terminal).
+
+I don't do native desktop programming but I like Casey's explanations about the inner
+workings of the terminal, and the problems with APIs that he run into, and how
+he solved them. The results he got in a benchmark were mind-blowing.
+
+The software can be fast... Who could know?
+
+### Shell prompt
+
+While speaking about terminals, having a nice prompt is almost as important.
+
+I'm using [Starship](https://starship.rs/) for quite some time,
+not because it's written in Rust.
+My main motivation was the out-of-the-box minimal design and its speed.
+
+Before I was using [oh-my-bash](https://github.com/ohmybash/oh-my-bash),
+but it was noticeably slow when showing Git info. Starship is much faster.
+
+## Feature branching
+
+While traversing Twitter I've seen Dan quoting part of an article
+
+<Tweet id="1415586807031402504" />
+
+And I cannot agree more with this. I had this thought some years ago. 
+After reading the whole [article](https://thinkinglabs.io/articles/2021/07/14/on-the-evilness-of-feature-branching-a-tale-of-two-teams.html)
+I can also share how hard it is to convince others.
+
+I had a similar discussion with colleagues resulting in still doing feature branching.
+For some reason, people prefer doing big Pull-Requests.
+Although I understand that having a top-notch Continues Delivery pipeline to support
+trunk-based development isn't something that comes easy and cheap.
+
+I think that somehow we got so used to doing code reviews and working with branches,
+that we stopped remembering how we used to work without it...
+
+## Into Stitches
+
+[Stitches](https://stitches.dev/) is an interesting CSS-in-JS library that
+has a very small size and also is very performant.
+The most interesting thing about it is that it comes without a `Provider`,
+it doesn't need it.
+
+The second key feature for me is that it has out-of-the-box support for
+[design tokens](https://stitches.dev/docs/tokens).
+
+Recently [Pedro Duarte](https://twitter.com/peduarte)
+got interviewed by the
+[CodingCatDev podcast](https://youtu.be/5hyGWA2SHk8)
+and was talking about Stitches, as well as the whole CSS-in-JS trend,
+and the inspirations for it.
+
+I'm a huge fan of the [variant API](https://stitches.dev/docs/variants),
+but the idea of using variants in combination with
+[responsive styles](https://stitches.dev/docs/responsive-styles) as an
+alternative to media queries sounds very powerful and novel.
+
+I use [styled-system](https://styled-system.com/) on the daily basis,
+which also has Variant API and responsive styles. Stitches look like
+the next step in evolution, more capable with better TypeScript support,
+smaller and faster.
+
+## Key prop
+
+The other day [Dan](https://twitter.com/dan_abramov) wrote a blog post
+as a Twitter thread about React
+[key prop](https://reactjs.org/docs/lists-and-keys.html#keys).
+
+<Tweet id="1415279090446204929" />
+
+### Svelte version
+
+Later someone asked [Rich Harris](https://twitter.com/Rich_Harris) how
+[Svelte](https://svelte.dev/) is handling those cases and
+he responded with a link to [`each` docs](https://svelte.dev/docs#each).
+
+### Vue
+
+Not surprisingly Vue also has a
+[`key` attribute](https://v3.vuejs.org/api/special-attributes.html#key)
+for the very same reasons.
+
+Although there were few
+[breaking changes](https://v3.vuejs.org/guide/migration/key-attribute.html#overview)
+between the versions.
+
+### Conclusion
+
+As you can see all those frameworks have this form of an attribute. So learning
+from Dan's approachable explanation you learn not only React
+but also Vue and Svelte, in some way.
+
+## Game architecture
+
+I like to watch some GDC presentations from time to time, learning about
+how to design games. YouTube algorithm presented me a talk from the
+[Roguelike Celebration](https://roguelike.club/) conference by
+[Bob Nystrom](https://twitter.com/munificentbob)
+about [game architecture patterns](https://youtu.be/JxI3Eu5DPwE).
+
+Bob's explanation of [ECS](https://en.wikipedia.org/wiki/Entity_component_system)
+finally helped me understand the concept.
+Then he showed how ECS can be used to have composable capabilities for items.
+Like for a sword that has a ranged attack but also can throw a fireball
+and can be used to defend.
+
+Bob also explains other code patterns in terms of solutions to problems
+you can run into while writing a game. Some of the patterns reminded me
+of how Fred George suggested writing
+[Simple code](/journal/004-simple#Simple).
+
+## Extracting a type of array element in TypeScript
+
+The other day I was working with a big and nested type that was generated
+for me by Apollo based on our GraphQL schema.
+
+### Removing null from unions
+
+I wanted to remove `null`s which was quite easy to do with help of the build-in
+[`NonNullable` utility](https://www.typescriptlang.org/docs/handbook/utility-types.html#nonnullabletype).
+
+I'm not a fan of the [non-null assertion operator](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-).
+It looks lazy and hacky and sometimes I'm just too paranoid to trust it.
+
+`NonNullable` was great, but it doesn't work on objects, and just to remove
+one level of `null`s I created one more utility.
+
+```typescript
+type NonNullableObject<T> = {
+    [P in keyof T]: NonNullableT[P]>;
+};
+```
+
+This can be used in [type predicate](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+for [array filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+callback to remove elements with `null`s.
+
+### Get array element type
+
+The other challenge was how to get the type out of the array. I found two solutions.
+The first was to use a similar utility generic type to `infer` element type.
+
+(Side note: Sadly I cannot find a good documentation for it, the best that search
+shows me is [Inferring with conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types))
+
+```
+type ArrayElement<ArrayType> = ArrayType extends (infer ElementType)[]
+    ? ElementType
+    : never;
+```
+
+Then I've stumbled upon the old post on
+[How to get types from arrays](https://steveholgado.com/typescript-types-from-arrays/)
+that offer simpler solutions and dives into how it works.
+
+I've created [a small playground](https://www.typescriptlang.org/play?#code/MYewdgzgLgBAhmAlgWzgGwjAvDA2gKBhgG8YIAHAU2EUogC4YByYOKJgGhjDmUsaYAxNAFcAZmICeTGAF8OhEmSo06AgCYgA5p269+zQYk0z5i0hWq0GzZCBERKunnwEAVAE6UAbiA+n8AF18fChJKhgAQQ8POEkAUTRKPjAoAB5o2Mk3cMoAPmwomLiciMoADyhKMHVMAApEMDFKDxhE5OqoUsoASlxgoiIAfjaklK7cxSJGMB8WgG4QsIjIpFQ0AEZC5coQMXg19AhcMBFkACMW4NDcqMO0ACZCzLj28bSdvYOUI7ygA)
+so you can see them side by side and choose whichever you prefer.
